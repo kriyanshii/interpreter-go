@@ -43,7 +43,7 @@ func main() {
 		os.Exit(1)
 	}
 	rawfileContent := string(fileContents)
-	for _, content := range rawfileContent {
+	for line, content := range rawfileContent {
 		switch content {
 		case LEFT_PAREN:
 			fmt.Println("LEFT_PAREN ( null")
@@ -65,7 +65,12 @@ func main() {
 			fmt.Println("PLUS + null")
 		case MINUS:
 			fmt.Println("MINUS - null")
+		default:
+			fmt.Println(line, " Unexpected character: ", content)
+			break
+
 		}
+
 	}
 	fmt.Println("EOF  null")
 
