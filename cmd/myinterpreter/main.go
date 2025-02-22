@@ -254,7 +254,30 @@ func (s *Scanner) scanToken(lox *Lox) {
 		s.addToken(SEMICOLON)
 	case '*':
 		s.addToken(STAR)
-
+	case '!':
+		if s.match('=') {
+			s.addToken(BANG_EQUAL)
+		} else {
+			s.addToken(BANG)
+		}
+	case '=':
+		if s.match('=') {
+			s.addToken(EQUAL_EQUAL)
+		} else {
+			s.addToken(EQUAL)
+		}
+	case '<':
+		if s.match('=') {
+			s.addToken(LESS_EQUAL)
+		} else {
+			s.addToken(LESS)
+		}
+	case '>':
+		if s.match('=') {
+			s.addToken(GREATER_EQUAL)
+		} else {
+			s.addToken(GREATER)
+		}
 	default:
 		if isDigit(c) {
 			s.number()
