@@ -278,6 +278,20 @@ func (s *Scanner) scanToken(lox *Lox) {
 		} else {
 			s.addToken(GREATER)
 		}
+	case '/':
+		if s.match('/') {
+			for s.peek() != '\n' && !s.isAtEnd() {
+				s.advance()
+			}
+		} else {
+			s.addToken(SLASH)
+		}
+	case ' ', '\r', '\t':
+		// Ignore whitespace
+	case '\n':
+		s.Line++
+	case '"':
+		s.string(lox)
 	default:
 		if isDigit(c) {
 			s.number()
