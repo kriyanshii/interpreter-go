@@ -108,7 +108,7 @@ var keywords = map[string]TokenType{
 type Token struct {
 	Type    TokenType
 	Lexeme  string
-	Literal any
+	Literal interface{}
 	Line    int
 }
 
@@ -326,8 +326,16 @@ func (s *Scanner) addToken(tokenType TokenType) {
 	s.addTokenWithLiteral(tokenType, "null")
 }
 
-func (s *Scanner) addTokenWithLiteral(tokenType TokenType, literal any) {
+func (s *Scanner) addTokenWithLiteral(tokenType TokenType, literal interface{}) {
 	text := s.Source[s.Start:s.Current]
+	switch v := literal.(type) {
+	case float64:
+		if v == float64(int(v)) {
+			literal = fmt.Sprintf("%.1f", v) // Ensures 1234.0 for whole numbers
+		} else {
+			literal = fmt.Sprintf("%g", v) // Keeps the precision for non-whole numbers
+		}
+	}
 	s.Tokens = append(s.Tokens, Token{tokenType, text, literal, s.Line})
 }
 
